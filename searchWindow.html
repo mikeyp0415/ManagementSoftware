@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FISP Information Portal</title>
+    <script src="https://kit.fontawesome.com/6a5df83ec1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="mainStyle.css">
+</head>
+<style>
+    form {
+        width: 40%;
+    }
+
+    #formAndTable {
+        display: flex;
+        margin: auto;
+    }
+
+    table {
+        width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  color: #000000;
+}
+
+td, th {
+    border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  padding: 3px;
+}
+
+tr {
+
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+</style>
+<body>
+    <nav>
+        <div>
+            <a href="addWindow.html"><i class="fa-solid fa-keyboard"></i></a>
+        </div>
+        <div>
+            <a href="searchWindow.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+        <div>
+            <a href="mainWindow.html"><i class="fa-solid fa-door-open"></i></a>
+        </div>
+    </nav>
+    <h1 id="titleman">Search/Delete Buildings</h1>
+    <hr>
+    <br>
+    <div class="wrapper">
+        <form class="formTwo">
+            <label id="Priority">
+                Priority
+                <br>
+                <input type="text" name="Priority" placeholder="" /> 
+            </label>
+            <br>
+            <label id="JobNum">
+                Job Number
+                <br>
+                <input type="text" name="JobNum" placeholder="" /> 
+            </label>
+            <br>
+            <label id="JobName">
+                Job Name
+                <br>
+                <input type="text" name="JobName" placeholder="" /> 
+            </label>
+            <br>
+            <label id="Scope">
+                Scope
+                <br>
+                <input type="text" name="Scope" placeholder="" /> 
+            </label>
+            <br><br>
+            <input id="bong" value="Get Records" type="submit"></input>
+            <input id="jong" value="Reload" type="submit"></input>
+            <input id="mong" value="Delete Records" type="submit"></input>
+            <input id="fong" value="Email Records" type="submit"></input>
+        </form>
+        <h2 id="testboy"></h2>
+        <hr>
+        <br>
+        <div id="grid">
+            <div class="cream1">Current<br>Priority</div>
+            <div class="cream1">Job#</div>
+            <div class="cream1">JobName</div>
+            <div class="cream1">Scope</div>
+            <div class="cream1">PM</div>
+            <div class="cream1">Staff</div>
+            <div class="cream1">Prepare<br>Backgrounds</div>
+            <div class="cream1">Field<br>Survey</div>
+            <div class="cream1">Scaffold<br>Drops</div>
+            <div class="cream1">MarkUp<br>Drawings</div>
+            <div class="cream1">Cadd</div>
+            <div class="cream1">Report</div>
+            <div class="cream1">Review</div>
+            <div class="cream1">Finalize</div>
+            <div class="cream1">Client<br>Review</div>
+            <div class="cream1">Uploaded<br>DOB</div>
+            <div class="cream1">Filed</div>
+            <div class="cream1">Approved</div>
+            <div class="cream1">Resubmitted</div>
+            <div class="cream1">Permit</div>
+            <div class="cream1">Remarks</div>
+        </div>
+        </div>
+        <br>
+        <script>
+            
+
+var Connection = require('tedious').Connection;  
+var config = {  
+    server: 'SERVER',  //update me
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'SERVER USERNAME', //update me
+            password: 'SERVER PASSWORD'  //update me
+        }
+    },
+    options: {
+        // If you are on Microsoft Azure, you need encryption:
+        encrypt: true,
+        database: 'SERVER DATABASE'  //update me
+    }
+}; 
+var connection = new Connection(config);  
+connection.on('connect', function(err) {  
+    // If no error, then good to proceed.  
+    console.log("Connected");  
+});  
+
+connection.connect();
+
+var Request = require('tedious').Request;  
+var TYPES = require('tedious').TYPES; 
+
+
+
+const wrapper = document.querySelector('.wrapper'),
+form = wrapper.querySelectorAll('.formTwo'),
+submitInput = form[0].querySelector('input[type="submit"]');
+
+
+
+function executeStatement(e) {  
+
+    e.preventDefault();
+    var formData = new FormData(form[0]);
+
+    document.getElementById('testboy').innerHTML = 'Data generating...';
+
+    var sql = `select *from UPDATE_TABLE_HERE where 1=1`;
+
+    if (formData.get('Priority') != '') {
+        sql += `and CurrentPriority like @Priority `;
+    }
+
+    if (formData.get('JobNum') != '') {
+        sql += `and Job# like @JobNum `;
+    }
+
+    if (formData.get('JobName') != '') {
+        sql += `and JobName like @JobName `;
+    }
+
+    if (formData.get('Scope') != '') {
+        sql += `and Scope like @Scope `;
+    }
+
+
+    request = new Request(sql, function(err) {  
+    if (err) {  
+        console.log(err);}  
+    });  
+
+
+    request.addParameter('Priority', TYPES.VarChar, formData.get('Priority'));
+    request.addParameter('JobNum', TYPES.VarChar, formData.get('JobNum'));
+    request.addParameter('JobName', TYPES.VarChar, formData.get('JobName'));
+    request.addParameter('Scope', TYPES.VarChar, formData.get('Scope'));
+    request.addParameter('PM', TYPES.VarChar, formData.get('PM'));
+    request.addParameter('Staff', TYPES.VarChar, formData.get('Staff'));
+    request.addParameter('Prepare', TYPES.VarChar, formData.get('Prepare'));
+    request.addParameter('Field', TYPES.VarChar, formData.get('Field'));
+    request.addParameter('ScaffoldDrops', TYPES.VarChar, formData.get('ScaffoldDrops'));
+    request.addParameter('MarkedUpDrawing', TYPES.VarChar, formData.get('MarkedUpDrawing'));
+    request.addParameter('Cadd', TYPES.VarChar, formData.get('Cadd'));
+    request.addParameter('Report', TYPES.VarChar, formData.get('Report'));
+    request.addParameter('Review', TYPES.VarChar, formData.get('Review'));
+    request.addParameter('Finalize', TYPES.VarChar, formData.get('Finalize'));
+    request.addParameter('ClientReview', TYPES.VarChar, formData.get('ClientReview'));
+    request.addParameter('UploadedDOB', TYPES.VarChar, formData.get('UploadedDOB'));
+    request.addParameter('Filed', TYPES.VarChar, formData.get('Filed'));
+    request.addParameter('Approved', TYPES.VarChar, formData.get('Approved'));
+    request.addParameter('Resubmitted', TYPES.VarChar, formData.get('Resubmitted'));
+    request.addParameter('Permit', TYPES.VarChar, formData.get('Permit'));
+    request.addParameter('Remarks', TYPES.VarChar, formData.get('Remarks'));
+
+  // Emits a 'DoneInProc' event when completed.
+    request.on('row', (columns) => {
+        columns.forEach((column) => {
+            var result = `<div class="bam">${column.value}</div>`;
+            grid.innerHTML += result;
+            result = '';
+        });
+    });
+
+  request.on('done', (rowCount) => {
+    console.log('Done is called!');
+  });
+
+  request.on('doneInProc', (rowCount, more) => {
+    document.getElementById('testboy').innerHTML = rowCount + ' rows returned';
+  });
+
+  // In SQL Server 2000 you may need: connection.execSqlBatch(request);
+  connection.execSql(request);
+
+  
+}
+
+function executeReload(e) {  
+    window.location.reload
+}
+
+function executeDelete(e) {  
+    
+    e.preventDefault();
+    var formData = new FormData(form[0]);
+
+    if (formData.get('Priority') == '' && formData.get('JobNum') == '' && formData.get('JobName') == '' && formData.get('Scope') == '') {
+        document.getElementById('testboy').innerHTML = 'Must search for records before deleting.'
+    }else {
+        var sql = `delete from UPDATE_TABLE_HERE where 1=1`;
+
+if (formData.get('Priority') != '') {
+    sql += `and CurrentPriority like @Priority `;
+}
+
+if (formData.get('JobNum') != '') {
+    sql += `and Job# like @JobNum `;
+}
+
+if (formData.get('JobName') != '') {
+    sql += `and JobName like @JobName `;
+}
+
+if (formData.get('Scope') != '') {
+    sql += `and Scope like @Scope `;
+}
+
+
+request = new Request(sql, function(err) {  
+if (err) {  
+    console.log(err);}  
+});  
+
+
+request.addParameter('Priority', TYPES.VarChar, formData.get('Priority'));
+request.addParameter('JobNum', TYPES.VarChar, formData.get('JobNum'));
+request.addParameter('JobName', TYPES.VarChar, formData.get('JobName'));
+request.addParameter('Scope', TYPES.VarChar, formData.get('Scope'));
+request.addParameter('PM', TYPES.VarChar, formData.get('PM'));
+request.addParameter('Staff', TYPES.VarChar, formData.get('Staff'));
+request.addParameter('Prepare', TYPES.VarChar, formData.get('Prepare'));
+request.addParameter('Field', TYPES.VarChar, formData.get('Field'));
+request.addParameter('ScaffoldDrops', TYPES.VarChar, formData.get('ScaffoldDrops'));
+request.addParameter('MarkedUpDrawing', TYPES.VarChar, formData.get('MarkedUpDrawing'));
+request.addParameter('Cadd', TYPES.VarChar, formData.get('Cadd'));
+request.addParameter('Report', TYPES.VarChar, formData.get('Report'));
+request.addParameter('Review', TYPES.VarChar, formData.get('Review'));
+request.addParameter('Finalize', TYPES.VarChar, formData.get('Finalize'));
+request.addParameter('ClientReview', TYPES.VarChar, formData.get('ClientReview'));
+request.addParameter('UploadedDOB', TYPES.VarChar, formData.get('UploadedDOB'));
+request.addParameter('Filed', TYPES.VarChar, formData.get('Filed'));
+request.addParameter('Approved', TYPES.VarChar, formData.get('Approved'));
+request.addParameter('Resubmitted', TYPES.VarChar, formData.get('Resubmitted'));
+request.addParameter('Permit', TYPES.VarChar, formData.get('Permit'));
+request.addParameter('Remarks', TYPES.VarChar, formData.get('Remarks'));
+
+// Emits a 'DoneInProc' event when completed.
+request.on('row', (columns) => {
+    columns.forEach((column) => {
+        var result = `<div class="bam">${column.value}</div>`;
+        grid.innerHTML += result;
+        result = '';
+    });
+});
+
+request.on('done', (rowCount) => {
+console.log('Done is called!');
+});
+
+request.on('doneInProc', (rowCount, more) => {
+    document.getElementById('testboy').innerHTML = 'Records successfully deleted.';
+});
+
+// In SQL Server 2000 you may need: connection.execSqlBatch(request);
+connection.execSql(request);
+    }
+
+}
+
+
+function executeEmail(e) {  
+       
+    e.preventDefault();
+    var formData = new FormData(form[0]);
+
+    if (formData.get('Priority') == '' && formData.get('JobNum') == '' && formData.get('JobName') == '' && formData.get('Scope') == '') {
+        var sql = `DECLARE @body_content nvarchar(max);
+SET @body_content = N'
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+<style>
+table.GeneratedTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  color: #000000;
+}
+
+#red {
+color: red;
+}
+
+
+table.GeneratedTable td, table.GeneratedTable th {
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.GeneratedTable thead {
+  background-color: #ffcc00;
+}
+
+#plus {
+            margin-left: 5px;
+            color: #7f9dad;
+            font-size: 70px;
+            font-family: "Audiowide", "sans-serif";
+            }
+
+            #tinyspan {
+font-size: 20px;
+font-family: "Audiowide", "sans-serif";
+}
+
+#lawlessman {
+font-size: 80px;
+font-family: "Audiowide", "sans-serif";
+}
+
+</style>
+
+<center><h1 id="lawlessman">Lawless <span id="plus">+</span><br>Mangione<br><span id="tinyspan">Architects | Engineers</span></h1></center>
+<br>
+
+<p>
+Dear Ms. Biviana or Mr. Bill Struth,
+<br><br>
+THIS IS A TEST EMAIL - 
+<br><br>
+The table below contains all of the current FISP Report data/buildings totaling to 184. <br><br>Future email reminders will follow this table/column format, so if you would like the table designed in a different way, or if you would like me to include less columns that 
+is fine.
+</p> <br>
+
+<hr>
+
+<br>
+
+<table class="GeneratedTable">
+  <thead>
+    <tr>
+      <th>CurrentPriority</th>
+      <th>Job#</th>
+      <th>JobName</th>
+	  <th>Scope</th>
+	  <th>PM</th>
+	  <th>Staff</th>
+	  <th>PrepareBackgrounds</th>
+	  <th>FieldSurvey</th>
+      <th>ScaffoldDrops</th>
+	  <th>MarkUpDrawings</th>
+	  <th>Cadd</th>
+	  <th>Report</th>
+	  <th>Review</th>
+	  <th>Finalize</th>
+	  <th>ClientReview</th>
+	  <th>UploadedDOB</th>
+	  <th>Filed</th>
+	  <th>Approved</th>
+	  <th>Resubmitted</th>
+	  <th>Permit</th>
+	  <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+ ' +
+CAST(
+        (select
+td = UPDATE_TABLE_HERE.CurrentPriority, '',
+td = UPDATE_TABLE_HERE.Job#, '',
+td = UPDATE_TABLE_HERE.JobName, '',
+td = UPDATE_TABLE_HERE.Scope, '',
+td = UPDATE_TABLE_HERE.PM, '',
+td = UPDATE_TABLE_HERE.Staff, '',
+td = UPDATE_TABLE_HERE.PrepareBackgrounds, '',
+td = UPDATE_TABLE_HERE.FieldSurvey, '',
+td = UPDATE_TABLE_HERE.ScaffoldDrops, '',
+td = UPDATE_TABLE_HERE.MarkUpDrawings, '',
+td = UPDATE_TABLE_HERE.Cadd, '',
+td = UPDATE_TABLE_HERE.Report, '',
+td = UPDATE_TABLE_HERE.Review, '',
+td = UPDATE_TABLE_HERE.Finalize, '',
+td = UPDATE_TABLE_HERE.ClientReview, '',
+td = UPDATE_TABLE_HERE.UploadedToDOB, '',
+td = UPDATE_TABLE_HERE.Filed, '',
+td = UPDATE_TABLE_HERE.Approved, '',
+td = UPDATE_TABLE_HERE.Resubmitted, '',
+td = UPDATE_TABLE_HERE.Permit, '',
+td = UPDATE_TABLE_HERE.Remarks, ''
+from UPDATE_TABLE_HERE
+where 1=1
+		FOR XML PATH('tr'), TYPE   
+        ) AS nvarchar(max)
+    ) +
+  N'</tbody>
+</table>
+
+ <br>
+  <p>Notice: This is an automated email which will be sent to you every month. For questions, please reach out to mikep@lawlessmangione.com</p>
+  ';
+
+EXEC msdb.dbo.sp_send_dbmail
+    @profile_name = 'L+M_Reminders',
+    @recipients = 'mikep@lawlessmangione.com',
+    @copy_recipients = 'mikep@lawlessmangione.com',
+	@blind_copy_recipients = 'mikep@lawlessmangione.com',
+    @body = @body_content,
+    @body_format = 'HTML',
+    @subject = 'THIS IS A TEST EMAIL';`;    
+
+    request = new Request(sql, function(err) {  
+if (err) {  
+    console.log(err);}  
+});  
+
+
+request.addParameter('Priority', TYPES.VarChar, formData.get('Priority'));
+request.addParameter('JobNum', TYPES.VarChar, formData.get('JobNum'));
+request.addParameter('JobName', TYPES.VarChar, formData.get('JobName'));
+request.addParameter('Scope', TYPES.VarChar, formData.get('Scope'));
+request.addParameter('PM', TYPES.VarChar, formData.get('PM'));
+request.addParameter('Staff', TYPES.VarChar, formData.get('Staff'));
+request.addParameter('Prepare', TYPES.VarChar, formData.get('Prepare'));
+request.addParameter('Field', TYPES.VarChar, formData.get('Field'));
+request.addParameter('ScaffoldDrops', TYPES.VarChar, formData.get('ScaffoldDrops'));
+request.addParameter('MarkedUpDrawing', TYPES.VarChar, formData.get('MarkedUpDrawing'));
+request.addParameter('Cadd', TYPES.VarChar, formData.get('Cadd'));
+request.addParameter('Report', TYPES.VarChar, formData.get('Report'));
+request.addParameter('Review', TYPES.VarChar, formData.get('Review'));
+request.addParameter('Finalize', TYPES.VarChar, formData.get('Finalize'));
+request.addParameter('ClientReview', TYPES.VarChar, formData.get('ClientReview'));
+request.addParameter('UploadedDOB', TYPES.VarChar, formData.get('UploadedDOB'));
+request.addParameter('Filed', TYPES.VarChar, formData.get('Filed'));
+request.addParameter('Approved', TYPES.VarChar, formData.get('Approved'));
+request.addParameter('Resubmitted', TYPES.VarChar, formData.get('Resubmitted'));
+request.addParameter('Permit', TYPES.VarChar, formData.get('Permit'));
+request.addParameter('Remarks', TYPES.VarChar, formData.get('Remarks'));
+
+// Emits a 'DoneInProc' event when completed.
+request.on('row', (columns) => {
+    columns.forEach((column) => {
+        var result = `<div class="bam">${column.value}</div>`;
+        grid.innerHTML += result;
+        result = '';
+    });
+});
+
+request.on('done', (rowCount) => {
+console.log('Done is called!');
+});
+
+request.on('doneInProc', (rowCount, more) => {
+    document.getElementById('testboy').innerHTML = 'Emailed ALL records. Please wait a couple minutes.';
+});
+
+// In SQL Server 2000 you may need: connection.execSqlBatch(request);
+connection.execSql(request);
+
+    }else {
+       
+        var importantString = '';
+
+        if (formData.get('Priority') != '') {
+    importantString += ` and CurrentPriority like @Priority `;
+}
+
+if (formData.get('JobNum') != '') {
+    importantString += ` and Job# like @JobNum `;
+}
+
+if (formData.get('JobName') != '') {
+    importantString += ` and JobName like @JobName `;
+}
+
+if (formData.get('Scope') != '') {
+    importantString += ` and Scope like @Scope `;
+}
+
+
+        var sql = `DECLARE @body_content nvarchar(max);
+SET @body_content = N'
+<style>
+table.GeneratedTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  color: #000000;
+}
+
+#red {
+color: red;
+}
+
+table.GeneratedTable td, table.GeneratedTable th {
+  border-width: 2px;
+  border-color: #ffcc00;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.GeneratedTable thead {
+  background-color: #ffcc00;
+}
+
+#plus {
+            margin-left: 5px;
+            color: #7f9dad;
+            font-size: 70px;
+            font-family: "Audiowide", "sans-serif";
+            }
+
+            #tinyspan {
+font-size: 20px;
+font-family: "Audiowide", "sans-serif";
+}
+
+#lawlessman {
+font-size: 80px;
+font-family: "Audiowide", "sans-serif";
+}
+</style>
+
+<center><h1 id="lawlessman">Lawless <span id="plus">+</span><br>Mangione<br><span id="tinyspan">Architects | Engineers</span></h1></center>
+<br>
+
+<p>
+Dear Ms. Biviana or Mr. Bill Struth,
+<br><br>
+THIS IS A TEST EMAIL - 
+<br><br>
+The table below contains all of the current FISP Report data/buildings. If you would like the table designed in a different way, or if you would like me to include less columns that 
+is fine.
+</p> <br>
+
+<hr>
+
+<br>
+
+<table class="GeneratedTable">
+  <thead>
+    <tr>
+      <th>CurrentPriority</th>
+      <th>Job#</th>
+      <th>JobName</th>
+	  <th>Scope</th>
+	  <th>PM</th>
+	  <th>Staff</th>
+	  <th>PrepareBackgrounds</th>
+	  <th>FieldSurvey</th>
+      <th>ScaffoldDrops</th>
+	  <th>MarkUpDrawings</th>
+	  <th>Cadd</th>
+	  <th>Report</th>
+	  <th>Review</th>
+	  <th>Finalize</th>
+	  <th>ClientReview</th>
+	  <th>UploadedDOB</th>
+	  <th>Filed</th>
+	  <th>Approved</th>
+	  <th>Resubmitted</th>
+	  <th>Permit</th>
+	  <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+ ' +
+CAST(
+        (select
+td = UPDATE_TABLE_HERE.CurrentPriority, '',
+td = UPDATE_TABLE_HERE.Job#, '',
+td = UPDATE_TABLE_HERE.JobName, '',
+td = UPDATE_TABLE_HERE.Scope, '',
+td = UPDATE_TABLE_HERE.PM, '',
+td = UPDATE_TABLE_HERE.Staff, '',
+td = UPDATE_TABLE_HERE.PrepareBackgrounds, '',
+td = UPDATE_TABLE_HERE.FieldSurvey, '',
+td = UPDATE_TABLE_HERE.ScaffoldDrops, '',
+td = UPDATE_TABLE_HERE.MarkUpDrawings, '',
+td = UPDATE_TABLE_HERE.Cadd, '',
+td = UPDATE_TABLE_HERE.Report, '',
+td = UPDATE_TABLE_HERE.Review, '',
+td = UPDATE_TABLE_HERE.Finalize, '',
+td = UPDATE_TABLE_HERE.ClientReview, '',
+td = UPDATE_TABLE_HERE.UploadedToDOB, '',
+td = UPDATE_TABLE_HERE.Filed, '',
+td = UPDATE_TABLE_HERE.Approved, '',
+td = UPDATE_TABLE_HERE.Resubmitted, '',
+td = UPDATE_TABLE_HERE.Permit, '',
+td = UPDATE_TABLE_HERE.Remarks, ''
+from UPDATE_TABLE_HERE
+where 1=1 ` + importantString + ` 
+		FOR XML PATH('tr'), TYPE   
+        ) AS nvarchar(max)
+    ) +
+  N'</tbody>
+</table>
+
+ <br>
+  <p>Notice: This is an automated email which will be sent to you every month. For questions, please reach out to mikep@lawlessmangione.com</p>
+  ';
+
+EXEC msdb.dbo.sp_send_dbmail
+    @profile_name = 'L+M_Reminders',
+    @recipients = 'UPDATE EMAIL HERE',
+    @copy_recipients = 'UPDATE EMAIL HERE',
+	@blind_copy_recipients = 'UPDATE EMAIL HERE',
+    @body = @body_content,
+    @body_format = 'HTML',
+    @subject = 'THIS IS A TEST EMAIL';`;    
+
+request = new Request(sql, function(err) {  
+if (err) {  
+    console.log(err);}  
+});  
+
+
+request.addParameter('Priority', TYPES.VarChar, formData.get('Priority'));
+request.addParameter('JobNum', TYPES.VarChar, formData.get('JobNum'));
+request.addParameter('JobName', TYPES.VarChar, formData.get('JobName'));
+request.addParameter('Scope', TYPES.VarChar, formData.get('Scope'));
+request.addParameter('PM', TYPES.VarChar, formData.get('PM'));
+request.addParameter('Staff', TYPES.VarChar, formData.get('Staff'));
+request.addParameter('Prepare', TYPES.VarChar, formData.get('Prepare'));
+request.addParameter('Field', TYPES.VarChar, formData.get('Field'));
+request.addParameter('ScaffoldDrops', TYPES.VarChar, formData.get('ScaffoldDrops'));
+request.addParameter('MarkedUpDrawing', TYPES.VarChar, formData.get('MarkedUpDrawing'));
+request.addParameter('Cadd', TYPES.VarChar, formData.get('Cadd'));
+request.addParameter('Report', TYPES.VarChar, formData.get('Report'));
+request.addParameter('Review', TYPES.VarChar, formData.get('Review'));
+request.addParameter('Finalize', TYPES.VarChar, formData.get('Finalize'));
+request.addParameter('ClientReview', TYPES.VarChar, formData.get('ClientReview'));
+request.addParameter('UploadedDOB', TYPES.VarChar, formData.get('UploadedDOB'));
+request.addParameter('Filed', TYPES.VarChar, formData.get('Filed'));
+request.addParameter('Approved', TYPES.VarChar, formData.get('Approved'));
+request.addParameter('Resubmitted', TYPES.VarChar, formData.get('Resubmitted'));
+request.addParameter('Permit', TYPES.VarChar, formData.get('Permit'));
+request.addParameter('Remarks', TYPES.VarChar, formData.get('Remarks'));
+
+// Emits a 'DoneInProc' event when completed.
+request.on('row', (columns) => {
+    columns.forEach((column) => {
+        var result = `<div class="bam">${column.value}</div>`;
+        grid.innerHTML += result;
+        result = '';
+    });
+});
+
+request.on('done', (rowCount) => {
+console.log('Done is called!');
+});
+
+request.on('doneInProc', (rowCount, more) => {
+    document.getElementById('testboy').innerHTML = 'Emailed current records. Please wait a couple minutes.';
+});
+
+// In SQL Server 2000 you may need: connection.execSqlBatch(request);
+connection.execSql(request);
+    }
+}
+
+
+
+    document.addEventListener('DOMContentLoaded', function(){
+    bong.addEventListener('click', executeStatement, false);
+    }, false)
+
+    document.addEventListener('DOMContentLoaded', function(){
+    jong.addEventListener('click', executeReload, false);
+    }, false)
+
+    document.addEventListener('DOMContentLoaded', function(){
+    mong.addEventListener('click', executeDelete, false);
+    }, false)
+
+    document.addEventListener('DOMContentLoaded', function(){
+    fong.addEventListener('click', executeEmail, false);
+    }, false)
+    
+        </script>
+</body>
+</html>

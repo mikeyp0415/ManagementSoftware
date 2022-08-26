@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FISP Information Portal</title>
+    <script src="https://kit.fontawesome.com/6a5df83ec1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="mainStyle.css">
+</head>
+<body>
+    <nav>
+        <div>
+            <a href="addWindow.html"><i class="fa-solid fa-keyboard"></i></a>
+        </div>
+        <div>
+            <a href="searchWindow.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+        <div>
+            <a href="mainWindow.html"><i class="fa-solid fa-door-open"></i></a>
+        </div>
+    </nav>
+    <h1 id="titleman">Add Buildings</h1>
+<hr>
+    <br>
+    <center>
+<div class="wrapper">
+    <form class="form">
+        <label id="Priority">
+            Priority
+            <br>
+            <input type="text" name="Priority" placeholder=""/> 
+        </label>
+        <label id="JobNum">
+            Job Number
+            <br>
+            <input type="text" name="JobNum" placeholder=""/> 
+        </label>
+        <label id="JobName">
+            Job Name
+            <br>
+            <input type="text" name="JobName" placeholder=""/> 
+        </label>
+        <label id="Scope">
+            Scope
+            <br>
+            <input type="text" name="Scope" placeholder=""/> 
+        </label>
+        <label id="PM">
+            PM
+            <br>
+            <input type="text" name="PM" placeholder=""/> 
+        </label>
+        <label id="Staff">
+            Staff
+            <br>
+            <input type="text" name="Staff" placeholder=""/> 
+        </label>
+        <label id="Prepare">
+            Prepare Backgrounds
+            <br>
+            <input type="text" name="Prepare" placeholder=""/> 
+        </label>
+        <label id="Field">
+            Field Survey
+            <br>
+            <input type="text" name="Field" placeholder=""/> 
+        </label>
+        <label id="ScaffoldDrops">
+            Scaffold Drops
+            <br>
+            <input type="text" name="ScaffoldDrops" placeholder=""/> 
+        </label>
+        <label id="MarkedUpDrawing">
+            Mark Up Drawings
+            <br>
+            <input type="text" name="MarkedUpDrawing" placeholder=""/> 
+        </label>
+        <label id="Cadd">
+            Cadd
+            <br>
+            <input type="text" name="Cadd" placeholder=""/> 
+        </label>
+        <label id="Report">
+            Report
+            <br>
+            <input type="text" name="Report" placeholder=""/> 
+        </label>
+        <label id="Review">
+            Review
+            <br>
+            <input type="text" name="Review" placeholder=""/> 
+        </label>
+        <label id="Finalize">
+            Finalize
+            <br>
+            <input type="text" name="Finalize" placeholder=""/> 
+        </label>
+        <label id="ClientReview">
+            Client Review
+            <br>
+            <input type="text" name="ClientReview" placeholder=""/> 
+        </label>
+        <label id="UploadedDOB">
+            Uploaded in DOB NOW
+            <br>
+            <input type="text" name="UploadedDOB" placeholder=""/> 
+        </label>
+        <label id="Filed">
+            Filed
+            <br>
+            <input type="text" name="Filed" placeholder=""/> 
+        </label>
+        <label id="Approved">
+            Approved
+            <br>
+            <input type="text" name="Approved" placeholder=""/> 
+        </label>
+        <label id="Resubmitted">
+            Resubmitted?
+            <br>
+            <input type="text" name="Resubmitted" placeholder=""/> 
+        </label>
+        <label id="Permit">
+            Permit
+            <br>
+            <input type="text" name="Permit" placeholder=""/> 
+        </label>
+        <br><br>
+        <label id="Remarks">
+            Remarks
+            <br>
+            <textarea type="text" name="Remarks" placeholder=""></textarea> 
+        </label>
+        <br><br>
+        <input id="bang" type="submit" value="Submit" name="submit"/>
+        <input id="fang" type="submit" value="Reset Fields" name="submit"/>
+    </form>
+    <h2 id="testboy"></h2>
+</div>
+        <br>
+</center>
+</body>
+
+<script>
+
+
+const wrapper = document.querySelector('.wrapper'),
+form = wrapper.querySelectorAll('.form'),
+submitInput = form[0].querySelector('input[type="submit"]');
+
+function executeStatement(e) { 
+
+    e.preventDefault();
+    var formData = new FormData(form[0]);
+
+    var sql = `INSERT INTO UPDATE_TABLE_HERE (CurrentPriority, Job#, JobName, Scope, PM, STaff, PrepareBackgrounds, FieldSurvey, ScaffoldDrops, MarkUpDrawings, Cadd, Report, Review, Finalize, ClientReview, UploadedToDOB, Filed, Approved, Resubmitted, Permit, Remarks) VALUES (@Priority, @JobNum, @JobName, @Scope, @PM, @Staff, @Prepare, @Field, @ScaffoldDrops, @MarkedUpDrawing, @Cadd, @Report, @Review, @Finalize, @ClientReview, @UploadedDOB, @Filed, @Approved, @Resubmitted, @Permit, @Remarks)`
+
+    request = new Request(sql, function(err) {  
+    if (err) {  
+        console.log(err);}  
+    });  
+
+
+    request.addParameter('Priority', TYPES.VarChar, formData.get('Priority'));
+    request.addParameter('JobNum', TYPES.VarChar, formData.get('JobNum'));
+    request.addParameter('JobName', TYPES.VarChar, formData.get('JobName'));
+    request.addParameter('Scope', TYPES.VarChar, formData.get('Scope'));
+    request.addParameter('PM', TYPES.VarChar, formData.get('PM'));
+    request.addParameter('Staff', TYPES.VarChar, formData.get('Staff'));
+    request.addParameter('Prepare', TYPES.VarChar, formData.get('Prepare'));
+    request.addParameter('Field', TYPES.VarChar, formData.get('Field'));
+    request.addParameter('ScaffoldDrops', TYPES.VarChar, formData.get('ScaffoldDrops'));
+    request.addParameter('MarkedUpDrawing', TYPES.VarChar, formData.get('MarkedUpDrawing'));
+    request.addParameter('Cadd', TYPES.VarChar, formData.get('Cadd'));
+    request.addParameter('Report', TYPES.VarChar, formData.get('Report'));
+    request.addParameter('Review', TYPES.VarChar, formData.get('Review'));
+    request.addParameter('Finalize', TYPES.VarChar, formData.get('Finalize'));
+    request.addParameter('ClientReview', TYPES.VarChar, formData.get('ClientReview'));
+    request.addParameter('UploadedDOB', TYPES.VarChar, formData.get('UploadedDOB'));
+    request.addParameter('Filed', TYPES.VarChar, formData.get('Filed'));
+    request.addParameter('Approved', TYPES.VarChar, formData.get('Approved'));
+    request.addParameter('Resubmitted', TYPES.VarChar, formData.get('Resubmitted'));
+    request.addParameter('Permit', TYPES.VarChar, formData.get('Permit'));
+    request.addParameter('Remarks', TYPES.VarChar, formData.get('Remarks'));
+
+    var result = "";  
+    request.on('row', function(columns) {  
+        columns.forEach(function(column) {  
+          if (column.value === null) {  
+            console.log('NULL');  
+          } else {  
+            result+= column.value + " ";  
+          }  
+        });  
+        console.log(result);  
+        result ="";  
+    });  
+
+    request.on('done', function(rowCount, more) {  
+    console.log(rowCount + ' rows returned');  
+    });  
+    
+    // Close the connection after the final event emitted by the request, after the callback passes
+    request.on("requestCompleted", function (rowCount, more) {
+        document.getElementById('testboy').innerHTML = 'Record Submitted';
+        connection.close();
+    });
+    connection.execSql(request);
+}
+
+function executeReload(e) {  
+    window.location.reload
+}
+    
+
+document.addEventListener('DOMContentLoaded', function(){
+    bang.addEventListener('click', executeStatement, false);
+    }, false)
+    
+    document.addEventListener('DOMContentLoaded', function(){
+    fang.addEventListener('click', executeReload, false);
+    }, false)
+
+var Connection = require('tedious').Connection;  
+var config = {  
+    server: 'SERVER',  //update me
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'SERVER USERNAME', //update me
+            password: 'SERVER PASSWORD'  //update me
+        }
+    },
+    options: {
+        // If you are on Microsoft Azure, you need encryption:
+        encrypt: true,
+        database: 'SERVER DATABASE'  //update me
+    }
+}; 
+var connection = new Connection(config);  
+connection.on('connect', function(err) {  
+    // If no error, then good to proceed.  
+    console.log("Connected");  
+});  
+
+connection.connect();
+
+var Request = require('tedious').Request;  
+var TYPES = require('tedious').TYPES; 
+
+</script>
+</html>
