@@ -1,0 +1,21 @@
+HOW TO USE THIS CODE: 
+
+1. Install Git
+https://git-scm.com/downloads
+
+2. Install NPM and NodeJS by using the official installer from Nodes website.
+https://nodejs.org/en/download/
+NOTE: This package includes NPM, so you don't have to install it seperately.
+
+3. Create an Electron Package/Directory and follow the guide below if you are unfamiliar:
+https://www.electronjs.org/docs/latest/tutorial/quick-start
+
+4. Extract all code files from this repository into the Electron Package/Directory
+
+5. Install required dependencies with NPM
+npm install tedious
+npm install tedious-promises
+npm install mssql 
+npm install express 
+
+6. If you are attempting to launch the application to use it, you are going to need to edit all of the NodeJS Tedious SQL strings.
